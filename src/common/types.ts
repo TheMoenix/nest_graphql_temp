@@ -1,11 +1,8 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { Session } from 'src/models/session.model';
 
 export interface IGraphQLContext {
-  user: {
-    id: number;
-    name: string;
-    email: string;
-  };
+  session: Session;
 }
 
 export enum HEADERS {

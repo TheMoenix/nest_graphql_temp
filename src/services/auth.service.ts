@@ -1,28 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CONTEXT } from '@nestjs/graphql';
-
-export interface Auth {
-  userId: string;
-  name: string;
-  email: string;
-  context: any;
-  cookie: string;
-}
+import { Session } from 'src/models/session.model';
 
 @Injectable()
 export class AuthService {
-  user: Auth;
+  session: Session;
   constructor(@Inject(CONTEXT) context) {
-    const user = context?.user;
-    if (!user) {
+    if (!context && !context.session) {
       return;
     }
-    this.user = {
-      userId: user.id,
-      name: user.name,
-      email: user.email,
-      context: user.context,
-      cookie: user.cookie,
-    };
+    this.session = context.session;
   }
 }

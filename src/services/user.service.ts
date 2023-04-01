@@ -15,6 +15,10 @@ export class UserService {
 
   async createUser(user: CreateUserArgs) {
     try {
+      console.log('test');
+
+      console.log(this.auth.session);
+
       const userExists = await this.userModel.findOne({ email: user.email });
       if (userExists) {
         throw new Error('User Already Exists!!');

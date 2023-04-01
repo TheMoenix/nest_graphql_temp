@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Headers, Post } from '@nestjs/common';
 
 import { AppService } from './app.service';
 import { SessionService } from './services/session.service';
@@ -16,8 +16,17 @@ export class AppController {
     return this.appService.getHealthcheck();
   }
 
-  @Get('/get-session/:id')
-  async getUserBySession(@Param('id') id: string) {
-    return await this.sessionService.getUserBySession(id);
+  @Get('/session/:id')
+  async getUserBySession(
+    @Param('id') id: string,
+    @Headers('isActivity') isActivity: boolean,
+  ) {
+    if (isActivity) await this.sessionService.updateLastActivityAt(id);
+    return await this.sessionService.getSessionInfo(id);
   }
+
+  // @Post('/session')
+  // async createSession(@Param('id') id: string) {
+  //   return await this.sessionService.createNewSession();
+  // }
 }

@@ -20,7 +20,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     ConfigModule.forRoot(),
     ScheduleModule.forRoot(),
     MongooseModule.forRoot(
-      'mongodb://test:test@mongo:27017',
+      process.env.MOENIX_MONGO_URI || 'mongodb://test:test@mongo:27017',
       {
         authSource: 'admin',
         dbName: 'moenix',
