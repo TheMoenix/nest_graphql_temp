@@ -27,7 +27,8 @@ export class SessionService {
       this.logger.debug(new_session);
       return new_session;
     } catch (error) {
-      console.log(error);
+      this.logger.error(error);
+      return error;
     }
   }
 
@@ -67,7 +68,6 @@ export class SessionService {
             path: 'user',
           },
         });
-      if (!session) throw new Error('no session');
       return session;
     } catch (error) {
       this.logger.error(error);
@@ -81,7 +81,7 @@ export class SessionService {
         { lastActivityAt: new Date() },
       );
     } catch (error) {
-      console.log(error);
+      this.logger.error(error);
     }
   }
 }

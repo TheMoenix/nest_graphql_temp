@@ -17,9 +17,4 @@ export class QueryResolver {
   async getUser() {
     return 'user';
   }
-
-  @Query(() => Session)
-  async getSession() {
-    return 'session';
-  }
 }

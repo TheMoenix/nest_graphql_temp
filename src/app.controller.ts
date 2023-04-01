@@ -1,4 +1,5 @@
 import { Controller, Get, Param, Headers, Post } from '@nestjs/common';
+import { Body } from '@nestjs/common/decorators';
 
 import { AppService } from './app.service';
 import { SessionService } from './services/session.service';
@@ -25,8 +26,8 @@ export class AppController {
     return await this.sessionService.getSessionInfo(id);
   }
 
-  // @Post('/session')
-  // async createSession(@Param('id') id: string) {
-  //   return await this.sessionService.createNewSession();
-  // }
+  @Post('/session')
+  async createSession(@Body('email') email: string) {
+    return await this.sessionService.createNewSession(email);
+  }
 }

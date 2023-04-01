@@ -18,9 +18,4 @@ export class MutationResolver {
   async createUser(@Args() args: CreateUserArgs) {
     return await this.userService.createUser(args);
   }
-
-  @Mutation(() => Session)
-  async createSession(@Args() args: createSessionArgs) {
-    return await this.sessionService.createNewSession(args.email);
-  }
 }
