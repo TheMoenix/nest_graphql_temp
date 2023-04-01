@@ -14,6 +14,7 @@ import { Session, SessionSchema } from './models/session.model';
 import { AuthService } from './services/auth.service';
 import { UserService } from './services/user.service';
 import { ScheduleModule } from '@nestjs/schedule';
+import { CommonService } from './services/commonService';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { ScheduleModule } from '@nestjs/schedule';
   controllers: [AppController],
   providers: [
     AppService,
+    CommonService,
     SessionService,
     UserService,
     AuthService,

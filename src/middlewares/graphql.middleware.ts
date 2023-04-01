@@ -10,7 +10,7 @@ export const GraphQLMiddleware = async props => {
   const session = header[HEADERS.SESSION];
   if (!session) {
     logger.debug(`Session is invalid`);
-    return undefined;
+    return { undefined };
   }
   try {
     const sessionInfo = (await axios.get(`http://localhost/session/${session}`))
