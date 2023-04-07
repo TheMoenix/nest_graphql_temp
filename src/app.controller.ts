@@ -19,9 +19,9 @@ export class AppController {
     return this.appService.getHealthcheck();
   }
 
-  @Get('/session/:id')
+  @Get('/session')
   async getUserBySession(
-    @Param('id') id: string,
+    @Headers('x-session') id: string,
     @Headers('isActivity') isActivity: boolean,
   ) {
     if (isActivity) await this.sessionService.updateLastActivityAt(id);

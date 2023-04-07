@@ -17,18 +17,17 @@ export class SessionService {
   async createNewSession(user_email: string) {
     try {
       const user = await this.userModel.findOne({ email: user_email });
-      if (await this.doesHaveActiveSesstion(user)) {
-        return new Error('there is an active session');
+      const userSession = await this.doesHaveActiveSesstion(user);
+      if (userSession) {
+        return userSession;
       }
       const new_session = await this.sessionModel.create({
         user: user.id,
         lastActivityAt: new Date(),
       });
-      this.logger.debug(new_session);
       return new_session;
     } catch (error) {
       this.logger.error(error);
-      return error;
     }
   }
 
@@ -37,17 +36,20 @@ export class SessionService {
       user: user.id,
       status: 'active',
     });
-    if (session) return true;
-    return false;
+    return session;
   }
 
   @Cron('* * * * * *')
   async checkSessionExpiry() {
+    const oneHour = 1000 * 60 * 60;
     const activeSessions = await this.sessionModel.find({ status: 'active' });
     const date = new Date();
     for (let i = 0; i < activeSessions.length; i++) {
       const session = activeSessions[i];
-      if (date.getHours() - new Date(session.lastActivityAt).getHours() > 1) {
+      if (
+        date.getTime() - new Date(session.lastActivityAt).getTime() >
+        oneHour
+      ) {
         await this.sessionModel.updateOne(
           { _id: session._id },
           { status: 'expired' },

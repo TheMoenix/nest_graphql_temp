@@ -8,23 +8,25 @@ export const GraphQLMiddleware = async props => {
   const req = props.connection?.context ? props.connection.context : props.req;
   const header = req.headers || req;
   const session = header[HEADERS.SESSION];
+
   if (!session) {
     logger.debug(`Session is invalid`);
     return { undefined };
   }
   try {
-    const sessionInfo = (await axios.get(`http://localhost/session/${session}`))
-      .data;
+    const sessionInfo = (
+      await axios.get(`http://localhost/api/session`, {
+        headers: { 'x-session': session },
+      })
+    ).data;
+
     if (!sessionInfo) {
       logger.debug('Session is invalid');
       return undefined;
     }
 
-    const date = new Date();
-    const lastActivityAt = new Date(sessionInfo.lastActivityAt);
-    const diffHours = date.getHours() - lastActivityAt.getHours();
-    if (sessionInfo.status === 'expried' || diffHours > 1) {
-      logger.debug('Session expried');
+    if (sessionInfo.status === 'expired') {
+      logger.debug('Session expired');
       return undefined;
     }
     return { session: sessionInfo };

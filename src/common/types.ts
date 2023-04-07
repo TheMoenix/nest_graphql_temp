@@ -7,6 +7,7 @@ export interface IGraphQLContext {
 
 export enum HEADERS {
   SESSION = 'x-session',
+  COOKIE = 'x-cookie',
 }
 
 export type PairValue = [number, string];
