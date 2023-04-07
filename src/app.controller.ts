@@ -4,13 +4,14 @@ import { Body } from '@nestjs/common/decorators';
 import { AppService } from './app.service';
 import { SessionService } from './services/session.service';
 import { UserService } from './services/user.service';
-
+import { CommonService } from './services/commonService';
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
     private readonly sessionService: SessionService,
     private readonly userService: UserService,
+    private readonly commonService: CommonService,
   ) {}
 
   @Get('/healthcheck')
@@ -33,16 +34,24 @@ export class AppController {
     @Body('email') email: string,
     @Body('password') password: string,
   ) {
-    return this.userService.userLogin(email, password);
+    return this.userService.userLogin(
+      email,
+      this.commonService.encrypt(password),
+    );
   }
 
-  @Post('/user')
+  @Post('/register')
   async createUser(
     @Body('email') email: string,
     @Body('password') password: string,
     @Body('username') username: string,
     @Body('name') name: string,
   ) {
-    return this.userService.createUser({ email, password, username, name });
+    return this.userService.createUser({
+      email,
+      password: await this.commonService.encrypt(password),
+      username,
+      name,
+    });
   }
 }

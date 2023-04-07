@@ -11,7 +11,7 @@ export class CommonService {
     try {
       const mykey = createDecipheriv(
         'aes-128-cbc',
-        'my+very+long+password+1200',
+        'mylongpassword12',
         '0123456789123456',
       );
       let decrypted = mykey.update(textToDecrypt, 'hex', 'utf8');
@@ -26,7 +26,7 @@ export class CommonService {
     try {
       const mykey = createCipheriv(
         'aes-128-cbc',
-        'my+very+long+password+1200',
+        'mylongpassword12',
         '0123456789123456',
       );
       let encrypted = mykey.update(textToEncrypt, 'utf8', 'hex');
